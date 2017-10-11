@@ -1,0 +1,22 @@
+{
+	"variables": [],
+	"info": {
+		"name": "AbcSample",
+		"_postman_id": "4194b4c8-b15b-d3cc-8e99-fcd3494a8da7",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "{{AbcHost}}/api/Country",
+			"request": {
+				"url": "{{AbcHost}}/api/Country",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get All Countries"
+			},
+			"response": []
+		}
+	]
+}
