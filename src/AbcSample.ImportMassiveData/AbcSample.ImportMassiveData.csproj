@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,6 +50,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AbcSample.DAL\AbcSample.DAL.csproj">
+      <Project>{df1ac84c-9744-4a5f-9a53-0e7779af55ac}</Project>
+      <Name>AbcSample.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AbcSample.Entities\AbcSample.Entities.csproj">
+      <Project>{D0E0F957-95E7-4F3F-9C93-1419CB84787C}</Project>
+      <Name>AbcSample.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -9,12 +9,20 @@ namespace AbcSample.Api.Mappers
     {
         public override CountryResponse From(Country value)
         {
-            throw new NotImplementedException();
+            return new CountryResponse
+            {
+                Id = value.Id,
+                Description = value.Description
+            };
         }
 
         public override Country From(CountryResponse value)
         {
-            throw new NotImplementedException();
+            return new Country
+            {
+                Id = value.Id,
+                Description = value.Description
+            };
         }
     }
 }

@@ -2,12 +2,11 @@
 
 namespace AbcSample.Entities
 {
-    public class Country:TableEntity
+    
+    public class Country
     {
-        public Country(string alpha3):base("countries",alpha3)
-        {
-        }
-
+        public string Id { get; set; }
+        
         public string Description { get; set; }
     }
 }

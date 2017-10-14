@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AbcSample.Entities.Pagination;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace AbcSample.DAL.Storages.Table
 {
-    public interface ITableStorageManager<TEntity> where TEntity:TableEntity
+    public interface ITableStorageManager<TEntity>
     {
         Task<IEnumerable<TEntity>> GetAllByPartitionKey(string partitionKey);
 
@@ -13,6 +14,6 @@ namespace AbcSample.DAL.Storages.Table
 
         Task<TEntity> GetByPartitionRowKey(string partitionKey, string rowKey);
 
-        Task BatchUpsert(IEnumerable<TEntity> countries);
+        Task BatchUpsert(IList<TEntity> listToInsert, Func<TEntity, DynamicTableEntity> map2Table);
     }
 }

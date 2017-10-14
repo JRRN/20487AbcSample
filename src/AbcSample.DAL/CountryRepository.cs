@@ -1,27 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AbcSample.DAL.Storages.Table;
 using AbcSample.Entities;
 using AbcSample.Entities.Pagination;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace AbcSample.DAL
 {
     public class CountryRepository:ICountryRepository
     {
+        const string PartitionKeyCountry = "countries";
+        private readonly ITableStorageManager<Country> _tableStorage;
+
         public CountryRepository()
         {
-            //Create storage
-        }
-        
-
-        public Task Upsert(IEnumerable<Country> country)
-        {
-            throw new NotImplementedException();
+            _tableStorage = new TableStorageManager<Country>("masterData", Map);
         }
 
-        public Task<IPageResult<Country>> GetAllCountries()
+        Country Map(DynamicTableEntity tableEntity)
         {
-            throw new NotImplementedException();
+            return new Country
+            {
+                Id = tableEntity.RowKey,
+                Description = tableEntity.Properties["description"].StringValue
+            };
+        }
+
+        DynamicTableEntity Map2Table(Country input)
+        {
+            var table = new DynamicTableEntity{
+                PartitionKey = PartitionKeyCountry,
+                RowKey = input.Id,
+                Properties = new Dictionary<string, EntityProperty>
+                {
+                    {"description", new EntityProperty(input.Description)}
+                }
+            };
+
+            
+
+            return table;
+        }
+        public async Task Upsert(IList<Country> country)
+        {
+            await _tableStorage.BatchUpsert(country,Map2Table);
+        }
+
+        public async Task<IEnumerable<Country>> GetAllCountries()
+        {
+            return await _tableStorage.GetAllByPartitionKey(PartitionKeyCountry);
         }
     }
 }

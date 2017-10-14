@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,13 +45,25 @@
   <ItemGroup>
     <Compile Include="CountryService.cs" />
     <Compile Include="ICountryService.cs" />
+    <Compile Include="IoCModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AbcSample.DAL\AbcSample.DAL.csproj">
+      <Project>{DF1AC84C-9744-4A5F-9A53-0E7779AF55AC}</Project>
+      <Name>AbcSample.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AbcSample.Entities\AbcSample.Entities.csproj">
       <Project>{D0E0F957-95E7-4F3F-9C93-1419CB84787C}</Project>
       <Name>AbcSample.Entities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AbcSample.XCutting\AbcSample.XCutting.csproj">
+      <Project>{16688750-627c-4f01-b4b5-fd432f5b5aed}</Project>
+      <Name>AbcSample.XCutting</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

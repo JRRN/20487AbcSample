@@ -7,6 +7,9 @@ namespace AbcSample.Api
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+            GlobalConfiguration.Configure(InversionOfControlRegister.Register);
+
+            GlobalConfiguration.Configuration.EnsureInitialized();
         }
     }
 }

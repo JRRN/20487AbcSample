@@ -7,8 +7,8 @@ namespace AbcSample.DAL
 {
     public interface ICountryRepository
     {
-        Task Upsert(IEnumerable<Country> country);
+        Task Upsert(IList<Country> country);
 
-        Task<IPageResult<Country>> GetAllCountries();
+        Task<IEnumerable<Country>> GetAllCountries();
     }
 }
