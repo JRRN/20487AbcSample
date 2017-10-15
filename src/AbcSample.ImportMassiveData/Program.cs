@@ -10,57 +10,6 @@ using Microsoft.SqlServer.Server;
 
 namespace AbcSample.ImportMassiveData
 {
-    internal static class ColorConsole
-    {
-        private static readonly object consoleLock = new object();
-        public static void WriteMessageSucess(string message, ConsoleColor color = ConsoleColor.Gray)
-        {
-            Console.ForegroundColor = color;
-            Console.WriteLine(message);
-            Console.ForegroundColor = ConsoleColor.Gray;
-        }
-        public static void WriteLineNormal(string message, ConsoleColor color = ConsoleColor.Gray)
-        {
-            Console.ForegroundColor = color;
-            Console.WriteLine(message);
-            Console.ForegroundColor = ConsoleColor.Gray;
-        }
-
-        public static void WriteLineSucess(object value)
-        {
-            lock (consoleLock)
-            {
-                var previousColor = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine(value);
-                Console.ForegroundColor = previousColor;
-            }
-        }
-
-        public static void WriteLineError(object value)
-        {
-            lock (consoleLock)
-            {
-                var previousColor = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(value);
-                Console.ForegroundColor = previousColor;
-            }
-        }
-
-        public static void WriteLineWhite(object value)
-        {
-            lock (consoleLock)
-            {
-                var previousColor = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine(value);
-                Console.ForegroundColor = previousColor;
-            }
-        }
-
-    }
-
     class Program
     {
         static void Main(string[] args)
@@ -100,12 +49,18 @@ namespace AbcSample.ImportMassiveData
                 }
                 catch (Exception e)
                 {
-                    ColorConsole.WriteLineSucess(e.Message);
+                    ColorConsole.WriteLineError(e.Message);
                 }
             }
 
             ICountryRepository countryRepository = new CountryRepository();
             await countryRepository.Upsert(countriesToUpload);
+
+            foreach (var countryUpdated in countriesToUpload)
+            {
+                ColorConsole.WriteLineNormal($"Import {countryUpdated.Id} ... ");
+                ColorConsole.WriteSucess("OK.");
+            }
         }
 
         private const int ExpectedColumnNumber = 3;
@@ -131,12 +86,5 @@ namespace AbcSample.ImportMassiveData
                 Id = id
             };
         }
-    }
-
-    public class CommandLineParameters
-    {
-        [Option('i', "input", HelpText = "Path input file to import country in alpha 3 format", Required = true)]
-        public string InputFilePath { get; set; }
-
     }
 }

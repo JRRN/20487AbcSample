@@ -20,7 +20,6 @@ namespace AbcSample.Api.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        [Route("api/countries")]
         [ResponseType(typeof(IEnumerable<CountryResponse>))]
         public async Task<IHttpActionResult> GetAll()
         {
