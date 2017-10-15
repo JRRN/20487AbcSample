@@ -15,11 +15,6 @@ namespace AbcSample.Service
             _countryRepository = countryRepository;
         }
 
-        public void AddAll(IEnumerable<Country> countries)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<IEnumerable<Country>> GetAllCountries()
         {
             return _countryRepository.GetAllCountries();

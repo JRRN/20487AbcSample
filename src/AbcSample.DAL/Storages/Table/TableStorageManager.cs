@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AbcSample.Entities;
 using AbcSample.Entities.Pagination;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
@@ -12,12 +11,14 @@ namespace AbcSample.DAL.Storages.Table
 {
     public class TableStorageManager<TEntity> : ITableStorageManager<TEntity>
     {
-        private readonly Func<DynamicTableEntity, TEntity> _mapper;
+        private readonly Func<DynamicTableEntity, TEntity> _map2Entity;
+        private readonly Func<TEntity, DynamicTableEntity> _map2Table;
         private readonly CloudTable _table;
 
-        public TableStorageManager(string tableName, Func<DynamicTableEntity, TEntity> mapper)
+        public TableStorageManager(string tableName, Func<DynamicTableEntity, TEntity> map2Entity, Func<TEntity, DynamicTableEntity> map2Table)
         {
-            _mapper = mapper;
+            _map2Entity = map2Entity;
+            _map2Table = map2Table;
             _table = CreateTable(tableName);
         }
 
@@ -51,7 +52,7 @@ namespace AbcSample.DAL.Storages.Table
 
                 token = seg.ContinuationToken;
 
-                result.AddRange(seg.Select(_mapper).ToList());
+                result.AddRange(seg.Select(_map2Entity).ToList());
 
             } while (token != null);
 
@@ -72,7 +73,7 @@ namespace AbcSample.DAL.Storages.Table
 
             string serializedToken = seg.ContinuationToken != null ? TableStorageTokenSerializer.SerializeToken(seg.ContinuationToken) : null;
 
-            result.AddRange(seg.Select(_mapper).ToList());
+            result.AddRange(seg.Select(_map2Entity).ToList());
 
             return new PageResult<TEntity>(result, serializedToken);
         }
@@ -82,7 +83,7 @@ namespace AbcSample.DAL.Storages.Table
             throw new NotImplementedException();
         }
 
-        public async Task BatchUpsert(IList<TEntity> listToInsert, Func<TEntity,DynamicTableEntity> map)
+        public async Task BatchUpsert(IList<TEntity> listToInsert)
         {
             int initialRecord = 0;
             int totalRecords = listToInsert.Count;
@@ -93,7 +94,7 @@ namespace AbcSample.DAL.Storages.Table
                 TableBatchOperation batchOperation = new TableBatchOperation();
                 foreach (TEntity item in batchGroup)
                 {
-                    var row = map(item);
+                    var row = _map2Table(item);
                     batchOperation.Insert(row);
                 }
                 await _table.ExecuteBatchAsync(batchOperation);

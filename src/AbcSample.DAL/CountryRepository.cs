@@ -15,7 +15,7 @@ namespace AbcSample.DAL
 
         public CountryRepository()
         {
-            _tableStorage = new TableStorageManager<Country>("masterData", Map);
+            _tableStorage = new TableStorageManager<Country>("masterData", Map, Map2Table);
         }
 
         Country Map(DynamicTableEntity tableEntity)
@@ -38,13 +38,11 @@ namespace AbcSample.DAL
                 }
             };
 
-            
-
             return table;
         }
         public async Task Upsert(IList<Country> country)
         {
-            await _tableStorage.BatchUpsert(country,Map2Table);
+            await _tableStorage.BatchUpsert(country);
         }
 
         public async Task<IEnumerable<Country>> GetAllCountries()

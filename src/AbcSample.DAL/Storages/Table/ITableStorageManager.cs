@@ -14,6 +14,6 @@ namespace AbcSample.DAL.Storages.Table
 
         Task<TEntity> GetByPartitionRowKey(string partitionKey, string rowKey);
 
-        Task BatchUpsert(IList<TEntity> listToInsert, Func<TEntity, DynamicTableEntity> map2Table);
+        Task BatchUpsert(IList<TEntity> listToInsert);
     }
 }
