@@ -22,6 +22,21 @@ namespace AbcSample.WebApp
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/toastr")
+                .Include("~/Scripts/toastr.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/knockout")
+                .Include("~/Scripts/knockout-{version}.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/typescriptinterfaces")
+                .Include("~/Scripts/app/T4TS.generate.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/common").Include(
+                "~/Scripts/app/RestService.*"));
+
+            bundles.Add(new ScriptBundle("~/bundles/countries")
+                .IncludeDirectory("~/Scripts/app/Countries", "*.js", true));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));

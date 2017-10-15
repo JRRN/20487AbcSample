@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using AbcSample.Api.Models;
 using AbcSample.Entities;
@@ -9,6 +10,7 @@ using AbcSample.XCutting.Mapper;
 
 namespace AbcSample.Api.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class CountryController : ApiController
     {
         private readonly ICountryService _countryService;
