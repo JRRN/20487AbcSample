@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Microsoft.WindowsAzure.Storage.Blob;
 
-namespace AbcSample.Api.Controllers
+namespace AbcSample.Api.Helpers
 {
     public class AzureStorageMultipartFormDataStreamProvider : MultipartFormDataStreamProvider
     {
@@ -32,12 +32,10 @@ namespace AbcSample.Api.Controllers
 
             if (headers.ContentType != null)
             {
-                // Set appropriate content type for your uploaded file
                 blob.Properties.ContentType = headers.ContentType.MediaType;
             }
 
             FileData.Add(new MultipartFileData(headers, blob.Name));
-
             return blob.OpenWrite();
         }
     }

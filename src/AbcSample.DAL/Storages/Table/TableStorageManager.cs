@@ -88,6 +88,7 @@ namespace AbcSample.DAL.Storages.Table
             int initialRecord = 0;
             int totalRecords = listToInsert.Count;
             const int pageSize = 100;
+            
             do
             {
                 var batchGroup = listToInsert.Skip(initialRecord).Take(pageSize).ToList();

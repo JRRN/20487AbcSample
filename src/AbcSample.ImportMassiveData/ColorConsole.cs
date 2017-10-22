@@ -5,17 +5,25 @@ namespace AbcSample.ImportMassiveData
     internal static class ColorConsole
     {
         private static readonly object consoleLock = new object();
-        public static void WriteMessageSucess(string message, ConsoleColor color = ConsoleColor.Gray)
+        public static void WriteMessageSucess(string message)
         {
-            Console.ForegroundColor = color;
-            Console.WriteLine(message);
-            Console.ForegroundColor = ConsoleColor.Gray;
+            lock (consoleLock)
+            {
+                var previousColor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine(message);
+                Console.ForegroundColor = previousColor;
+            }
         }
-        public static void WriteLineNormal(string message, ConsoleColor color = ConsoleColor.Gray)
+        public static void WriteLineNormal(string message)
         {
-            Console.ForegroundColor = color;
-            Console.WriteLine(message);
-            Console.ForegroundColor = ConsoleColor.Gray;
+            lock (consoleLock)
+            {
+                var previousColor = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine(message);
+                Console.ForegroundColor = previousColor;
+            }
         }
 
         public static void WriteLineSucess(object value)

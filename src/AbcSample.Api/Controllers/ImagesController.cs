@@ -1,6 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using AbcSample.Api.Helpers;
+using Microsoft.Azure;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace AbcSample.Api.Controllers
 {
@@ -10,28 +19,60 @@ namespace AbcSample.Api.Controllers
         [HttpPost, Route("api/images/uploadOriginal")]
         public async Task<IHttpActionResult> UploadOriginal()
         {
-            // validar que es multipart
-            // conectar con el container images dentro del blob storage
-            // crear y leer por medio del proveedor que esta en helper
-            // devolver el ok
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+            }
 
-            return await Task.FromResult(Ok());
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer imagesContainer = blobClient.GetContainerReference("images");
+            var provider = new AzureStorageMultipartFormDataStreamProvider(imagesContainer);
+
+            try
+            {
+                await Request.Content.ReadAsMultipartAsync(provider);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error has occured. Details: {ex.Message}");
+            }
+
+            var filename = provider.FileData.FirstOrDefault()?.LocalFileName;
+            if (string.IsNullOrEmpty(filename))
+            {
+                return BadRequest("An error has occured while uploading your file. Please try again.");
+            }
+
+            return Ok();
         }
 
         [HttpGet, Route("api/images/thumbnails")]
         public async Task<IHttpActionResult> GetThumbnails()
         {
-            var url = "https://pbs.twimg.com/profile_images/3210576643/84355abe2ed11d0e4c32ccb6a3b6841a_400x400.jpeg";
-            var robot = "https://image.flaticon.com/teams/slug/freepik.jpg";
-            var flechaUbic = "http://www.eniacinformatica.net/wp-content/uploads/2016/06/Map-Marker-Marker-Outside-Azure-icon.png";
+            List<string> thumbnailUrls = new List<string>();
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            CloudBlobContainer thumbContainer = blobClient.GetContainerReference("thumbs");
 
-            return await Task.FromResult(Ok(new[] { url, robot, flechaUbic }));
+            await thumbContainer.SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
 
-            // crear una conexion con el contenedor thumbs en blob storage
-            // asignar los permisos publicos al contenedor
-            // buscar los registros llamando al metodo ListBlobsSegmentedAsync y volcar las url de cada item en una coleccion
-            // repetir la busqueda mientras el continuation token no sea nulo
-            // luego, devolver el resultado
+            BlobContinuationToken continuationToken = null;
+
+            do
+            {
+                var resultSegment = await thumbContainer.ListBlobsSegmentedAsync("", true, BlobListingDetails.All, 10, continuationToken, null, null);
+
+                foreach (var blobItem in resultSegment.Results)
+                {
+                    thumbnailUrls.Add(blobItem.StorageUri.PrimaryUri.ToString());
+                }
+
+                continuationToken = resultSegment.ContinuationToken;
+            }
+            while (continuationToken != null);
+
+            return await Task.FromResult(Ok(thumbnailUrls));
         }
     }
 }
