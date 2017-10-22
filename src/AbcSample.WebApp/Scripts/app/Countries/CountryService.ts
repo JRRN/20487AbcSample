@@ -1,6 +1,6 @@
 ﻿import common = require("../RestService");
 
-export class CountryService extends common.RestService {
+export class CountryService extends common.XCutting.RestService {
     apiUrlBase: string = null;
 
     constructor() {
