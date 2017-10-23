@@ -1,18 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DF1AC84C-9744-4A5F-9A53-0E7779AF55AC}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{D293D843-90AA-48ED-915C-B9209BD8929B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AbcSample.DAL</RootNamespace>
-    <AssemblyName>AbcSample.DAL</AssemblyName>
+    <RootNamespace>AbcSample.WebJob.Colors</RootNamespace>
+    <AssemblyName>AbcSample.WebJob.Colors</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,12 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Data.Edm, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Data.Edm.5.6.4\lib\net40\Microsoft.Data.Edm.dll</HintPath>
     </Reference>
@@ -63,39 +61,49 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.Azure.WebJobs">
+      <HintPath>..\packages\Microsoft.Azure.WebJobs.Core.1.1.2\lib\net45\Microsoft.Azure.WebJobs.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.WebJobs.Host">
+      <HintPath>..\packages\Microsoft.Azure.WebJobs.1.1.2\lib\net45\Microsoft.Azure.WebJobs.Host.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColorListWrapper.cs" />
-    <Compile Include="ColorRepository.cs" />
-    <Compile Include="CountryRepository.cs" />
-    <Compile Include="IColorRepository.cs" />
-    <Compile Include="ICountryRepository.cs" />
-    <Compile Include="IoCModule.cs" />
+    <Compile Include="Functions.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Storages\Blob\BlobStorageManager.cs" />
-    <Compile Include="Storages\Blob\IBlobStorage.cs" />
-    <Compile Include="Storages\Blob\MdpBlobContentType.cs" />
-    <Compile Include="Storages\Table\ITableStorageManager.cs" />
-    <Compile Include="Storages\Blob\QueueStorage.cs" />
-    <Compile Include="Storages\Blob\EnumExtension.cs" />
-    <Compile Include="Storages\Table\TableStorageManager.cs" />
-    <Compile Include="Storages\Table\TableStorageTokenSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\webjob-publish-settings.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AbcSample.DAL\AbcSample.DAL.csproj">
+      <Project>{df1ac84c-9744-4a5f-9a53-0e7779af55ac}</Project>
+      <Name>AbcSample.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AbcSample.Entities\AbcSample.Entities.csproj">
-      <Project>{D0E0F957-95E7-4F3F-9C93-1419CB84787C}</Project>
+      <Project>{d0e0f957-95e7-4f3f-9c93-1419cb84787c}</Project>
       <Name>AbcSample.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AbcSample.Service\AbcSample.Service.csproj">
+      <Project>{e0cf36d3-42f0-42f2-9cd6-2f175342da6a}</Project>
+      <Name>AbcSample.Service</Name>
     </ProjectReference>
     <ProjectReference Include="..\AbcSample.XCutting\AbcSample.XCutting.csproj">
       <Project>{16688750-627c-4f01-b4b5-fd432f5b5aed}</Project>
       <Name>AbcSample.XCutting</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Microsoft.Web.WebJobs.Publish.1.1.0\tools\webjobs.targets" Condition="Exists('..\packages\Microsoft.Web.WebJobs.Publish.1.1.0\tools\webjobs.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

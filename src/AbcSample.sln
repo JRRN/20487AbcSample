@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbcSample.ImportMassiveData
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbcSample.XCutting", "AbcSample.XCutting\AbcSample.XCutting.csproj", "{16688750-627C-4F01-B4B5-FD432F5B5AED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbcSample.WebJob.Colors", "AbcSample.WebJob.Colors\AbcSample.WebJob.Colors.csproj", "{D293D843-90AA-48ED-915C-B9209BD8929B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{16688750-627C-4F01-B4B5-FD432F5B5AED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16688750-627C-4F01-B4B5-FD432F5B5AED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16688750-627C-4F01-B4B5-FD432F5B5AED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D293D843-90AA-48ED-915C-B9209BD8929B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D293D843-90AA-48ED-915C-B9209BD8929B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D293D843-90AA-48ED-915C-B9209BD8929B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D293D843-90AA-48ED-915C-B9209BD8929B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
