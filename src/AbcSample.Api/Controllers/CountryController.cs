@@ -21,6 +21,7 @@ namespace AbcSample.Api.Controllers
             _countryService = countryService;
             _mapper = mapper;
         }
+
         [HttpGet]
         [ResponseType(typeof(IEnumerable<CountryResponse>))]
         public async Task<IHttpActionResult> GetAll()

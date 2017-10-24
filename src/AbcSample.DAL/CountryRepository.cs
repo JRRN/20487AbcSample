@@ -15,10 +15,10 @@ namespace AbcSample.DAL
 
         public CountryRepository()
         {
-            _tableStorage = new TableStorageManager<Country>("masterData", Map, Map2Table);
+            _tableStorage = new TableStorageManager<Country>("masterData", Map2Entity, Map2Table);
         }
 
-        Country Map(DynamicTableEntity tableEntity)
+        Country Map2Entity(DynamicTableEntity tableEntity)
         {
             return new Country
             {
